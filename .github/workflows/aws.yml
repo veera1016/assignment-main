@@ -45,3 +45,8 @@ jobs:
           NEW_TASK_DEF=$(aws ecs register-task-definition --cli-input-json "$(cat task-definition.json | sed "s|{{ECR_REGISTRY}}|$ECR_REGISTRY|g; s|{{IMAGE_TAG}}|$IMAGE_TAG|g; s|{{TASK_FAMILY}}|$TASK_FAMILY|g)")
           NEW_TASK_DEF_ARN=$(echo $NEW_TASK_DEF | jq -r '.taskDefinition.taskDefinitionArn')
           aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --task-definition $NEW_TASK_DEF_ARN
+      - name: Wait for ECS service deployment to complete
+        with:
+          ECS_CLUSTER: app_cluster
+          ECS_SERVICE: app_service
+          wait-for-service-stability: false
