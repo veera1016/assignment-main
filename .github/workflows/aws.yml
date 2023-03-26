@@ -8,8 +8,7 @@ env:
   ECS_CLUSTER: app_cluster
   CONTAINER_NAME: app
   ECS_SERVICE: app_service
-  ECS_TD: .github/workflows/jd.json
-
+  ECS_TD: .github/workflows/td.json
 
 jobs:
   deploy:
@@ -26,7 +25,6 @@ jobs:
           aws-access-key-id: "AKIAU7VEHTFCDVOTCOPY"
           aws-secret-access-key: "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"
           aws-region: "us-east-2"
-
 
       - name: Login to Amazon ECR
         id: login-ecr
