@@ -53,7 +53,7 @@ jobs:
             --cpu 256 \
             --memory 512 \
             --tags key=value \
-            --proxy-configuration "$(cat proxy_configuration.json)"
+            --proxy-configuration ="$(cat proxy_configuration.json)"
 
       - name: Wait for ECS service deployment to complete
         env:
