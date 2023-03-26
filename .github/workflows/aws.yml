@@ -41,11 +41,9 @@ jobs:
           ECR_REGISTRY: "342868072772.dkr.ecr.us-east-2.amazonaws.com"
           IMAGE_TAG: latest
         run: |
-          TASK_FAMILY=$(aws ecs describe-services --cluster $ECS_CLUSTER --services $ECS_SERVICE --query "services[0].taskDefinition" --output text)
-          NEW_TASK_DEF=$(aws ecs register-task-definition --cli-input-json "$(cat task-definition.json | sed "s|{{ECR_REGISTRY}}|$ECR_REGISTRY|g; s|{{IMAGE_TAG}}|$IMAGE_TAG|g; s|{{TASK_FAMILY}}|$TASK_FAMILY|g)")
-          NEW_TASK_DEF_ARN=$(echo $NEW_TASK_DEF | jq -r '.taskDefinition.taskDefinitionArn')
-          aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --task-definition $NEW_TASK_DEF_ARN
-          
+          task-definition: .github/workflows/td.json
+          container-name: app
+
       - name: Wait for ECS service deployment to complete
         env:
           ECS_CLUSTER: app_cluster
