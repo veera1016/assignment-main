@@ -17,7 +17,7 @@ jobs:
         with:
           aws-access-key-id: "AKIAU7VEHTFCDVOTCOPY"
           aws-secret-access-key: "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"
-          aws-region: us-east-2
+          aws-region: "us-east-2"
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -36,17 +36,25 @@ jobs:
 
       - name: Update ECS task definition with new image
         env:
-          ECS_CLUSTER: app_cluster
-          ECS_SERVICE: app_service
+          ECS_CLUSTER: "app_cluster"
+          ECS_SERVICE: "app_service"
           ECR_REGISTRY: "342868072772.dkr.ecr.us-east-2.amazonaws.com"
           IMAGE_TAG: latest
         run: |
-          task-definition: .github/workflows/td.json
-          container-name: app
+          aws ecs register-task-definition \
+            --cli-input-json file://.github/workflows/td.json
+          aws ecs update-service \
+            --cluster $app_cluster \
+            --service $app_service \
+            --force-new-deployment \
+            --region us-east-2
 
       - name: Wait for ECS service deployment to complete
         env:
-          ECS_CLUSTER: app_cluster
-          ECS_SERVICE: app_service
+          ECS_CLUSTER: "app_cluster"
+          ECS_SERVICE: "app_service"
         run: |
-          wait-for-service-stability: false
+          aws ecs wait services-stable \
+            --cluster $app_cluster \
+            --services $app_service \
+            --region us-east-2
