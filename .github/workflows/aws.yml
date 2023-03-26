@@ -36,18 +36,24 @@ jobs:
 
       - name: Update ECS task definition with new image
         env:
-          ECS_CLUSTER: "app_cluster"
-          ECS_SERVICE: "app_service"
+          ECS_CLUSTER: app_cluster
+          ECS_SERVICE: app_service
           ECR_REGISTRY: "342868072772.dkr.ecr.us-east-2.amazonaws.com"
           IMAGE_TAG: latest
         run: |
           aws ecs register-task-definition \
-            --cli-input-json file://.github/workflows/td.json
-          aws ecs update-service \
-            --cluster $app_cluster \
-            --service $app_service \
-            --force-new-deployment \
-            --region us-east-2
+            --family task_definition_family \
+            --task-role-arn task_role_arn \
+            --execution-role-arn execution_role_arn \
+            --network-mode awsvpc \
+            --container-definitions "$(cat task_definition.json)" \
+            --volumes "$(cat volumes.json)" \
+            --placement-constraints "$(cat placement_constraints.json)" \
+            --requires-compatibilities FARGATE \
+            --cpu 256 \
+            --memory 512 \
+            --tags key=value \
+            --proxy-configuration "$(cat proxy_configuration.json)"
 
       - name: Wait for ECS service deployment to complete
         env:
