@@ -46,7 +46,7 @@ jobs:
             --task-role-arn task_role_arn \
             --execution-role-arn execution_role_arn \
             --network-mode awsvpc \
-            --container-definitions "$(cat task_definition.json)" \
+            --container-definitions = "$(cat task_definition.json)" \
             --volumes "$(cat volumes.json)" \
             --placement-constraints "$(cat placement_constraints.json)" \
             --requires-compatibilities FARGATE \
