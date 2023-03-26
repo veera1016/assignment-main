@@ -14,17 +14,19 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: dev
+    environment: test
+   
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-
+      
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: "AKIAU7VEHTFCE52JNCSZ"
           aws-secret-access-key: "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"
           aws-region: "us-east-2"
+
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -33,7 +35,7 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
-          ECR_REGISTRY: "342868072772.dkr.ecr.us-east-2.amazonaws.com/app_repo"
+          ECR_REGISTRY: "342868072772.dkr.ecr.us-east-2.amazonaws.com"
           ECR_REPOSITORY: "app_repo"
           IMAGE_TAG: latest
         run: |
