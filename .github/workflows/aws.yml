@@ -1,32 +1,23 @@
-name: Deploy to Amazon ECS
+name: Deploy to ECS
+
 on:
   push:
     branches:
       - main
-env:
-  AWS_REGION: us-east-2
-  ECS_CLUSTER: app_cluster
-  CONTAINER_NAME: app
-  ECS_SERVICE: app_service
-  ECS_TD: .github/workflows/td.json
 
 jobs:
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
-    environment: test
-   
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: "AKIAU7VEHTFCE52JNCSZ"
           aws-secret-access-key: "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"
-          aws-region: "us-east-2"
-
+          aws-region: us-east-2
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -42,18 +33,15 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def-1
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: ${{ env.ECS_TD }}
-          container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ steps.build-image.outputs.image }}
 
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def-1.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: false
+      - name: Update ECS task definition with new image
+        env:
+          ECS_CLUSTER: app_cluster
+          ECS_SERVICE: app_service
+          ECR_REGISTRY: "342868072772.dkr.ecr.us-east-2.amazonaws.com"
+          IMAGE_TAG: latest
+        run: |
+          TASK_FAMILY=$(aws ecs describe-services --cluster $ECS_CLUSTER --services $ECS_SERVICE --query "services[0].taskDefinition" --output text)
+          NEW_TASK_DEF=$(aws ecs register-task-definition --cli-input-json "$(cat task-definition.json | sed "s|{{ECR_REGISTRY}}|$ECR_REGISTRY|g; s|{{IMAGE_TAG}}|$IMAGE_TAG|g; s|{{TASK_FAMILY}}|$TASK_FAMILY|g)")
+          NEW_TASK_DEF_ARN=$(echo $NEW_TASK_DEF | jq -r '.taskDefinition.taskDefinitionArn')
+          aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --task-definition $NEW_TASK_DEF_ARN
