@@ -57,12 +57,4 @@ jobs:
       --memory 512 \
       --tags key=value
 
-      - name: Wait for ECS service deployment to complete
-        env:
-          ECS_CLUSTER: "app_cluster"
-          ECS_SERVICE: "app_service"
-        run: |
-          aws ecs wait services-stable \
-            --cluster $app_cluster \
-            --services $app_service \
-            --region us-east-2
+      
