@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-2:342868072772:task-definition/app",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:342868072772:task-definition/app:33",
     "containerDefinitions": [
         {
             "name": "app",
@@ -30,6 +30,7 @@
     "taskRoleArn": "arn:aws:iam::342868072772:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::342868072772:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
+    "revision": 33,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -59,7 +60,7 @@
     ],
     "cpu": "256",
     "memory": "512",
-    "registeredAt": "2023-03-26T07:15:13.615Z",
+    "registeredAt": "2023-03-26T14:30:05.615Z",
     "registeredBy": "arn:aws:iam::342868072772:user/bharat",
     "tags": []
 }
