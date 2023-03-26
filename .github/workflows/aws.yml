@@ -51,7 +51,7 @@ jobs:
           --network-mode awsvpc \
           --container-definitions ="$(cat task_definition.json)" \
           --volumes ="$(cat volumes.json)" \
-          --placement-constraints ='$(cat placement_constraints.json)' \
+          --placement-constraints "$(cat placement_constraints.json)" \
           --requires-compatibilities FARGATE \
           --cpu 256 \
           --memory 512 \
