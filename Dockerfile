@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package.json .
 
 # Install all dependencies
-RUN npm install
+RUN npm install -g npm@9.6.2
 
 # Copy other files too
 COPY ./ .
