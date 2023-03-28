@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-2:342868072772:task-definition/app:33",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:044514634443:task-definition/app",
     "containerDefinitions": [
         {
             "name": "app",
-            "image": "342868072772.dkr.ecr.us-east-2.amazonaws.com/app_repo:latest",
+            "image": "044514634443.dkr.ecr.us-east-2.amazonaws.com/app_repo",
             "cpu": 256,
             "memory": 512,
             "portMappings": [
@@ -14,23 +14,15 @@
                 }
             ],
             "essential": true,
-            "command": [
-                "docker",
-                "run",
-                "-p",
-                "3000:3000",
-                "hello-world-node"
-            ],
             "environment": [],
             "mountPoints": [],
             "volumesFrom": []
         }
     ],
     "family": "app",
-    "taskRoleArn": "arn:aws:iam::342868072772:role/ecsTaskExecutionRole",
-    "executionRoleArn": "arn:aws:iam::342868072772:role/ecsTaskExecutionRole",
+    "taskRoleArn": "arn:aws:iam::044514634443:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::044514634443:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 33,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -60,7 +52,7 @@
     ],
     "cpu": "256",
     "memory": "512",
-    "registeredAt": "2023-03-26T14:30:05.615Z",
-    "registeredBy": "arn:aws:iam::342868072772:user/bharat",
+    "registeredAt": "2023-03-28T14:53:42.852Z",
+    "registeredBy": "arn:aws:iam::044514634443:user/bharat",
     "tags": []
 }
