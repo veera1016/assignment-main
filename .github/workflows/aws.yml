@@ -22,9 +22,9 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ""
-          aws-secret-access-key: ""
-          aws-region: ""
+          aws-access-key-id: "AKIAQUXKHNLFW5XIY2O3"
+          aws-secret-access-key: "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"
+          aws-region: "us-east-2"
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -33,7 +33,7 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
-          ECR_REGISTRY: "***.dkr.ecr.us-east-2.amazonaws.com"
+          ECR_REGISTRY: "044514634443.dkr.ecr.us-east-2.amazonaws.com/app_repo"
           ECR_REPOSITORY: "app_repo"
           IMAGE_TAG: latest
         run: |
