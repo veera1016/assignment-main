@@ -38,9 +38,9 @@ resource "aws_security_group" "sg" {
   }
 
   ingress {
-    description = "http"
-    from_port   = 80
-    to_port     = 80
+    description = "htt"
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
